@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kramjatt <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: jduval <jduval@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/02/15 16:36:26 by kramjatt          #+#    #+#              #
-#    Updated: 2023/04/01 16:38:50 by jduval           ###   ########.fr        #
+#    Created: 2023/04/06 11:36:44 by jduval            #+#    #+#              #
+#    Updated: 2023/04/06 18:14:18 by jduval           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,19 +16,14 @@ MAKEFLAGS	+=	--no-print-directory
 
 ###############################################################################
 
-LIBS 		=	
-
-LIBS_TARGET =	
-
-INCLUDES	=	
-
-###############################################################################
-
-SRC_DIR 	=	src
+SRC_DIR 	=	mandatory
 
 OBJ_DIR 	=	.obj
 
-SRCS		:= 	
+SRCS		:=	main_philo.c				\
+				parsing/parse_user_input.c	\
+				parsing/create_database.c	\
+				parsing/parsing_utils.c		\
 
 SRCS		:=	$(SRCS:%=$(SRC_DIR)/%)
 
@@ -42,11 +37,7 @@ CC			=	gcc
 
 CFLAGS		=	-Wall -Wextra -Werror -pthread -ggdb3
 
-CPPFLAGS	=	-MMD -MP $(addprefix -I,$(INCLUDES))
-
-LDFLAGS		=	$(addprefix -L,$(dir $(LIBS_TARGET)))
-
-LDLIBS		=	$(addprefix -l,$(LIBS))
+CPPFLAGS	=	-MMD -MP
 
 DIRDUP 		= 	mkdir -p $(@D)
 
@@ -54,12 +45,9 @@ DIRDUP 		= 	mkdir -p $(@D)
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBS_TARGET)
-	@$(CC) $(LDFLAGS) $(OBJS) $(LDLIBS) -o $(NAME)
+$(NAME): $(OBJS) 
+	@$(CC) $(OBJS) -o $(NAME)
 	$(info CREATED $(NAME))
-
-$(LIBS_TARGET):
-	$(MAKE) -C $(dir $@)
 
 $(OBJ_DIR)/%.o : %.c
 	@$(DIRDUP)
@@ -69,12 +57,10 @@ $(OBJ_DIR)/%.o : %.c
 
 clean:
 	@rm -rf $(OBJ_DIR)
-	@make clean -C src/libft
 .PHONY: clean
 
 fclean: clean
 	@rm -f $(NAME)
-	@make fclean -C src/libft
 .PHONY: fclean
 
 re: fclean all
