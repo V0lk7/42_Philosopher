@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:36:48 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/06 18:21:02 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/07 23:23:56 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,7 @@ bool	check_overflow(const char *str);
 bool	ft_isspace(int c);
 bool	ft_isdigit(int c);
 int		ft_atoi(const char *nptr);
-
+//----------create_forks.c----------//
+t_fork	**create_forks(t_data data);
+//----------parsing_utils.c----------//
 #endif

@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:00:38 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/06 17:55:57 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/07 23:19:53 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,19 @@
 int	main(int argc, char **argv)
 {
 	t_data	data;
-//	t_fork	**forks;
-//	t_philo	**philo;
+	t_fork	**forks;
+	t_philo	**philo;
 
 	if (parse_user_input(argc, argv) == false
 		|| create_database(&data, argc, argv) == false)
 		return (0);
-/*
+
 	forks = create_forks(data);
 	if (forks == NULL)
-		error_forks();
+		exit (1);
 	philo = create_philo(&data, forks);
 	if (philo == NULL)
 		error_philo(forks);
-	free_all(forks, philo);*/
+	free_all(forks, philo);
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: jduval <jduval@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/06 11:36:44 by jduval            #+#    #+#              #
-#    Updated: 2023/04/06 18:14:18 by jduval           ###   ########.fr        #
+#    Updated: 2023/04/07 23:12:33 by jduval           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SRCS		:=	main_philo.c				\
 				parsing/parse_user_input.c	\
 				parsing/create_database.c	\
 				parsing/parsing_utils.c		\
+				parsing/create_forks.c		\
 
 SRCS		:=	$(SRCS:%=$(SRC_DIR)/%)
 
