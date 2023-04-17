@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:36:48 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/07 23:23:56 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/17 17:58:58 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef enum e_status
 
 typedef struct s_fork
 {
+	int				i;
 	pthread_mutex_t	fork;	
 }	t_fork;
 
@@ -36,6 +37,7 @@ typedef struct s_data
 	int				time_of_eat;
 	int				time_of_sleep;
 	int				nbr_of_eat;
+	bool			end;
 	pthread_mutex_t	print;
 }	t_data;
 
@@ -43,8 +45,9 @@ typedef struct s_philo
 {
 	int			spot;
 	pthread_t	id;
-	long		time;
 	t_status	status;
+	long		time;
+	int			nbr_of_eat;
 	t_fork		*fork_r;
 	t_fork		*fork_l;
 	t_data		*data;
@@ -60,7 +63,16 @@ bool	check_overflow(const char *str);
 bool	ft_isspace(int c);
 bool	ft_isdigit(int c);
 int		ft_atoi(const char *nptr);
-//----------create_forks.c----------//
+//----------create_data_struct.c----------//
 t_fork	**create_forks(t_data data);
-//----------parsing_utils.c----------//
+t_philo	**create_philo(t_data *data, t_fork **forks);
+//----------clear_data.c----------//
+void	free_philo(t_philo **philo);
+void	free_forks(t_fork **forks);
+void	free_all(t_fork **forks, t_philo **philo);
+//----------error_philosophers.c----------//
+void	error_create_philo(t_fork **forks);
+//----------process_utils.c----------//
+bool	all_philo_have_eat(t_philo **philo);
+long	get_the_time(void);
 #endif

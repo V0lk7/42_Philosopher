@@ -1,16 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_forks.c                                     :+:      :+:    :+:   */
+/*   create_data_struct.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 23:00:20 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/07 23:25:55 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/17 17:50:21 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
+#include <stdlib.h>
+
+
+static t_fork	*last_fork(t_fork **forks);
+static void	distribute_forks(t_philo *philo, t_fork **forks, int i);
+static void	put_data_in_philo(	t_philo *philo,
+								t_data *data,
+								t_fork **forks,
+								int i);
 
 t_fork	**create_forks(t_data data)
 {
@@ -26,6 +35,8 @@ t_fork	**create_forks(t_data data)
 		forks[i] = malloc(sizeof(t_fork));
 		if (forks[i] == NULL)
 			return (NULL);
+		pthread_mutex_init(&forks[i]->fork, NULL);
+		forks[i]->i = i;
 		i++;
 	}
 	forks[i] = NULL;
@@ -50,9 +61,55 @@ t_philo	**create_philo(t_data *data, t_fork **forks)
 				free_philo(philo);
 			return (NULL);
 		}
-		//rmplir les données dans philo... aled
+		put_data_in_philo(philo[i], data, forks, i);
 		i++;
 	}
+	philo[i] = NULL;
 	return (philo);
-	
+}
+
+static void	put_data_in_philo(	t_philo *philo,
+								t_data *data,
+								t_fork **forks,
+								int i)
+{
+		philo->spot = i;
+		philo->nbr_of_eat = 0;
+		philo->data = data;
+		if (i % 2 == 0)
+			philo->status = EAT;
+		else
+			philo->status = SLEEP;
+		distribute_forks(philo, forks, i);
+		return ;
+}
+
+static void	distribute_forks(t_philo *philo, t_fork **forks, int i)
+{
+	if (i == 0)
+	{
+		philo->fork_r = last_fork(forks);
+		philo->fork_l = forks[0];
+		if (philo->data->nbr_of_philo == 1)
+			philo->fork_l = NULL;
+	}
+	else
+	{
+		philo->fork_r = forks[i - 1];
+		philo->fork_l = forks[i];
+	}
+}
+
+static t_fork	*last_fork(t_fork **forks)
+{
+	int	i;
+
+	i = 0;
+	while (forks[i])
+	{
+		if (forks[i + 1] == NULL)
+			return (forks[i]);
+		i++;
+	}
+	return (forks[i]);
 }
