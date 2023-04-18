@@ -6,7 +6,7 @@
 #    By: jduval <jduval@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/06 11:36:44 by jduval            #+#    #+#              #
-#    Updated: 2023/04/17 18:03:57 by jduval           ###   ########.fr        #
+#    Updated: 2023/04/18 09:33:20 by jduval           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ DEPS		:=	$(OBJS:.o=.d)
 
 CC			=	gcc
 
-CFLAGS		=	-Wall -Wextra -Werror -pthread -ggdb3
+CFLAGS		=	-Wall -Wextra -Werror -ggdb3
 
 CPPFLAGS	=	-MMD -MP
 
@@ -50,7 +50,7 @@ DIRDUP 		= 	mkdir -p $(@D)
 all: $(NAME)
 
 $(NAME): $(OBJS) 
-	@$(CC) $(OBJS) -o $(NAME)
+	@$(CC) $(OBJS) -lpthread -o $(NAME)
 	$(info CREATED $(NAME))
 
 $(OBJ_DIR)/%.o : %.c
