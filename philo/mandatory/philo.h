@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:36:48 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/19 11:40:48 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/19 17:04:42 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ t_philo	**create_philo(t_data *data, t_fork **forks);
 //----------clear_data.c----------//
 void	free_philo(t_philo **philo);
 void	free_forks(t_fork **forks);
-void	free_all(t_fork **forks, t_philo **philo);
+void	free_all(t_fork **forks, t_philo **philo, t_data *data);
 //----------error_philosophers.c----------//
 void	error_create_philo(t_fork **forks);
 //----------process_utils.c----------//
 bool	all_philo_have_eat(t_philo **philo);
-long	get_the_time(void);
+long	get_the_time(long zero);
 bool	end_check(t_data *data, int eat);
 void	init_func(t_action **action);
 //----------print.c----------//

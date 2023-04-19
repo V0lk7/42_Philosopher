@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 16:57:35 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/19 11:40:25 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/19 16:41:35 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,19 @@ bool	all_philo_have_eat(t_philo **philo)
 	i = 0;
 	while (philo[i])
 	{
-		if (philo[i]->nbr_of_eat != philo[i]->data->nbr_of_eat)
+		if (philo[i]->nbr_of_eat < philo[i]->data->nbr_of_eat)
 			return (false);
 		i++;
 	}
 	return (true);
 }
 
-long	get_the_time(void)
+long	get_the_time(long zero)
 {
 	struct timeval	time;
 
 	gettimeofday(&time, NULL);
-	return (time.tv_sec * 1000 + (time.tv_usec / 1000));
+	return (time.tv_sec * 1000 + (time.tv_usec / 1000) - zero);
 }
 
 bool	end_check(t_data *data, int	eat)
@@ -46,7 +46,7 @@ bool	end_check(t_data *data, int	eat)
 		return (true);
 	}
 	pthread_mutex_unlock(&data->end_mutex);
-	if (eat == data->nbr_of_eat);
+	if (eat == data->nbr_of_eat)
 		return (true);
 	return (false);
 }
@@ -61,5 +61,4 @@ void	init_func(t_action **action)
 	action[5] = print_think;
 	action[6] = print_death;
 	action[7] = print_fork;
-	return (0);
 }

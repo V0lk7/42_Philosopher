@@ -6,41 +6,21 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:29:44 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/19 11:41:20 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/19 17:29:19 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
-
-static void	think_to_death(t_philo *philo, long time);
+#include <unistd.h>
 
 void	job_think(t_philo *philo)
 {
-	long	time;
-
-	time = get_the_time() + philo->data->time_of_think;
-	if (time >= philo->time_of_death)
+	philo->time->job = get_the_time(philo->time->zero);
+	if (philo->time->job >= philo->time->death)
 	{
-		death(philo, time);
+		death(philo);
 		return ;
 	}
-	philo->data->func[SLEEP + PRINT](philo);
-	usleep(time * 1000);
+	philo->data->func[THINK + PRINT](philo);
 	philo->status = EAT;
-}
-
-static void	think_to_death(t_philo *philo, long time)
-{
-	if ((time - philo->data->time_of_think) == philo->time_of_death)
-		death(philo);
-	else
-	{
-		time = (philo->time_of_death - get_the_time()) * 1000;
-		if (time >= 0)
-		{
-			philo->data->func[SLEEP + PRINT](philo);
-			usleep(time);
-		}
-		death(philo);
-	}
 }

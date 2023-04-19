@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:00:38 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/19 11:48:37 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/19 17:22:51 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	main(int argc, char **argv)
 	if (philo == NULL)
 		error_create_philo(forks);
 	running_philosophers(&data, philo);
-	free_all(forks, philo);
+	free_all(forks, philo, &data);
 	return (0);
 }
 
@@ -48,7 +48,14 @@ static void	running_philosophers(t_data *data, t_philo **philo)
 	start_philo(philo);
 	while (1)
 	{
-		if (data->end == true || all_philo_have_eat(philo) == true)
+		pthread_mutex_lock(&data->end_mutex);
+		if (data->end == true)
+		{
+			pthread_mutex_unlock(&data->end_mutex);
+			break ;
+		}
+		pthread_mutex_unlock(&data->end_mutex);
+		if (all_philo_have_eat(philo) == true)
 			break ;
 	}
 	while (philo[i])
@@ -65,10 +72,11 @@ static void start_philo(t_philo **philo)
 	long		time_philo;
 
 	i = 0;
-	time_philo = get_the_time() + philo[0]->data->time_to_die;
+	time_philo = get_the_time(0);
 	while (philo[i])
 	{
-		philo[i]->time_of_death = time_philo;
+		philo[i]->time->zero = time_philo;
+		philo[i]->time->death = time_philo + philo[i]->data->time_to_die;
 		pthread_create(&philo[i]->id, NULL, &routine_philo, philo[i]);
 		i++;
 	}
