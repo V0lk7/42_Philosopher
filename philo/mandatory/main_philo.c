@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:00:38 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/18 17:51:22 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/19 11:48:37 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <signal.h>
 #include <unistd.h>
 
-static void	display_data(t_data data, t_philo **philo);
 static void	*routine_philo(void *variable);
 static void start_philo(t_philo **philo);
 static void	running_philosophers(t_data *data, t_philo **philo);
@@ -36,10 +35,7 @@ int	main(int argc, char **argv)
 	philo = create_philo(&data, forks);
 	if (philo == NULL)
 		error_create_philo(forks);
-	
-	display_data(data, philo);
-	init_action(func);
-	running_philosophers(&data, philo, func);
+	running_philosophers(&data, philo);
 	free_all(forks, philo);
 	return (0);
 }
@@ -85,37 +81,9 @@ static void	*routine_philo(void *philo_base)
 	t_action	*func[8];
 	
 	philo = philo_base;
-	init_action(func);
-	while (verif_end(philo->data, philo->nbr_of_eat) == true)
-		func[philo->status]();
+	philo->data->func = func;
+	init_func(func);
+	while (end_check(philo->data, philo->nbr_of_eat) == false)
+		func[philo->status](philo);
 	return (0);
-}
-
-static void	display_data(t_data data, t_philo **philo)
-{
-	int	i;
-
-	i = 0;
-	printf("nbr of philo = %i\n", data.nbr_of_philo);
-	printf("time_to_die = %i\n", data.time_to_die);
-	printf("time_of_eat = %i\n", data.time_of_eat);
-	printf("time_of_sleep = %i\n", data.time_of_sleep);
-	printf("nbr_of_eat = %i\n", data.nbr_of_eat);
-	while (philo[i])
-	{
-		printf("#####################\n");
-		printf("philo id = %d\n", philo[i]->spot);
-		printf("philo status = ");
-		if (philo[i]->status == 0)
-			printf("EAT\n");
-		else if (philo[i]->status == 1)
-			printf("SLEEP\n");
-		else if (philo[i]->status == 2)
-			printf("THINK\n");
-		if (philo[i]->fork_l != NULL)
-			printf("left fork = %i\n", philo[i]->fork_l->i);
-		if (philo[i]->fork_r != NULL)
-			printf("right fork = %i\n", philo[i]->fork_r->i);
-		i++;
-	}
 }
