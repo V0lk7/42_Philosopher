@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 17:20:16 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/19 16:26:56 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/26 16:53:14 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <pthread.h>
 
 typedef struct s_philo	t_philo;
-typedef void t_action(t_philo *philo);
+typedef void			t_action(t_philo *philo);
 
 typedef enum e_plus
 {
@@ -62,6 +62,7 @@ typedef struct s_philo
 {
 	int				spot;
 	int				nbr_of_eat;
+	pthread_mutex_t	nbr_eat;
 	t_status		status;
 	pthread_t		id;
 	t_fork			*fork_r;

@@ -6,7 +6,7 @@
 #    By: jduval <jduval@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/06 11:36:44 by jduval            #+#    #+#              #
-#    Updated: 2023/04/19 11:28:19 by jduval           ###   ########.fr        #
+#    Updated: 2023/04/26 16:58:42 by jduval           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ DEPS		:=	$(OBJS:.o=.d)
 
 CC			=	gcc
 
-CFLAGS		=	-Wall -Wextra -Werror -ggdb3
+CFLAGS		=	-Wall -Wextra -Werror 
 
 CPPFLAGS	=	-MMD -MP
 

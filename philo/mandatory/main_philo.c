@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:00:38 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/21 18:02:59 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/26 16:54:54 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <unistd.h>
 
 static void	*routine_philo(void *variable);
-static void start_philo(t_philo **philo);
+static void	start_philo(t_philo **philo);
 static void	running_philosophers(t_data *data, t_philo **philo);
 
 int	main(int argc, char **argv)
@@ -58,7 +58,7 @@ static void	running_philosophers(t_data *data, t_philo **philo)
 		if (all_philo_have_eat(philo) == true)
 			break ;
 	}
-	while (philo[i])
+	while (philo[i] != NULL)
 	{
 		pthread_join(philo[i]->id, NULL);
 		i++;
@@ -66,7 +66,7 @@ static void	running_philosophers(t_data *data, t_philo **philo)
 	return ;
 }
 
-static void start_philo(t_philo **philo)
+static void	start_philo(t_philo **philo)
 {
 	int			i;
 	long		time_philo;
@@ -76,7 +76,7 @@ static void start_philo(t_philo **philo)
 	while (philo[i])
 	{
 		philo[i]->time->zero = time_philo;
-		philo[i]->time->death = time_philo + philo[i]->data->time_to_die;
+		philo[i]->time->death = philo[i]->data->time_to_die;
 		pthread_create(&philo[i]->id, NULL, &routine_philo, philo[i]);
 		i++;
 	}
@@ -85,13 +85,10 @@ static void start_philo(t_philo **philo)
 
 static void	*routine_philo(void *philo_base)
 {
-	t_philo 	*philo;
-	t_action	*func[8];
-	
+	t_philo	*philo;
+
 	philo = philo_base;
-	philo->data->func = func;
-	init_func(func);
-	while (end_check(philo->data, philo->nbr_of_eat) == false)
-		func[philo->status](philo);
+	while (end_check(philo->data, philo) == false)
+		philo->data->func[philo->status](philo);
 	return (0);
 }

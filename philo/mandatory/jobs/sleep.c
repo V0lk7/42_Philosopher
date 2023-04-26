@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:12:36 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/19 17:49:45 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/26 14:44:18 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static void	sleep_to_death(t_philo *philo, long time);
 
 void	job_sleep(t_philo *philo)
 {
+	if (end_check(philo->data, philo) == true)
+		return ;
 	philo->time->job = get_the_time(philo->time->zero);
 	if (philo->time->job + philo->data->time_of_sleep >= philo->time->death)
 	{
@@ -30,6 +32,8 @@ void	job_sleep(t_philo *philo)
 
 static void	sleep_to_death(t_philo *philo, long time)
 {
+	if (end_check(philo->data, philo) == true)
+		return ;
 	if ((time - philo->data->time_of_sleep) == philo->time->death)
 		death(philo);
 	else

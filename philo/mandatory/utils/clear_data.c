@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 10:30:00 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/19 17:05:32 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/26 16:58:25 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@ void	free_philo(t_philo **philo)
 	i = 0;
 	while (philo[i])
 	{
-		free(philo[i]);
 		free(philo[i]->time);
+		pthread_mutex_destroy(&philo[i]->nbr_eat);
+		free(philo[i]);
 		i++;
 	}
 	free(philo);
@@ -43,10 +44,11 @@ void	free_forks(t_fork **forks)
 	return ;
 }
 
-void	free_all(t_fork **forks, t_philo **philo,t_data *data)
+void	free_all(t_fork **forks, t_philo **philo, t_data *data)
 {
 	free_forks(forks);
 	free_philo(philo);
+	free(data->func);
 	pthread_mutex_destroy(&data->print);
 	pthread_mutex_destroy(&data->end_mutex);
 	return ;

@@ -6,20 +6,17 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 23:00:20 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/19 16:23:21 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/26 16:57:22 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 #include <stdlib.h>
 
-
 static t_fork	*last_fork(t_fork **forks);
-static void	distribute_forks(t_philo *philo, t_fork **forks, int i);
-static int	put_data_in_philo(	t_philo *philo,
-								t_data *data,
-								t_fork **forks,
-								int i);
+static void		distribute_forks(t_philo *philo, t_fork **forks, int i);
+static int		put_data_in_philo(t_philo *philo,
+					t_data *data, t_fork **forks, int i);
 
 t_fork	**create_forks(t_data data)
 {
@@ -68,10 +65,8 @@ t_philo	**create_philo(t_data *data, t_fork **forks)
 	return (philo);
 }
 
-static int	put_data_in_philo(	t_philo *philo,
-								t_data *data,
-								t_fork **forks,
-								int i)
+static int	put_data_in_philo(t_philo *philo,
+							t_data *data, t_fork **forks, int i)
 {
 	t_time	*time;
 
@@ -84,6 +79,7 @@ static int	put_data_in_philo(	t_philo *philo,
 	philo->spot = i + 1;
 	philo->nbr_of_eat = 0;
 	philo->data = data;
+	pthread_mutex_init(&philo->nbr_eat, NULL);
 	if (i % 2 == 0)
 		philo->status = EAT;
 	else
