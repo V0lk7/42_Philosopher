@@ -6,13 +6,12 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 13:02:25 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/26 15:56:46 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/27 11:27:14 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 #include <unistd.h>
-#include <stdio.h>
 
 static bool	lock_forks(t_philo *philo);
 static void	eat_to_death(t_philo *philo, long time);

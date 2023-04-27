@@ -6,12 +6,11 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 10:29:44 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/26 15:46:45 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/27 11:27:31 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
-#include <unistd.h>
 
 void	job_think(t_philo *philo)
 {

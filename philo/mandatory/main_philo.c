@@ -6,15 +6,11 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:00:38 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/26 16:54:54 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/27 11:28:23 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <signal.h>
-#include <unistd.h>
 
 static void	*routine_philo(void *variable);
 static void	start_philo(t_philo **philo);
