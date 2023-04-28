@@ -6,7 +6,7 @@
 #    By: jduval <jduval@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/06 11:36:44 by jduval            #+#    #+#              #
-#    Updated: 2023/04/28 10:51:23 by jduval           ###   ########.fr        #
+#    Updated: 2023/04/28 14:59:28 by jduval           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,10 +24,11 @@ SRCS		:=	main_philo.c					\
 				parsing/parse_user_input.c		\
 				parsing/create_database.c		\
 				parsing/parsing_utils.c			\
+				parsing/init_mutex.c			\
 				parsing/create_data_struct.c	\
 				utils/clear_data.c				\
 				utils/error_pthread.c			\
-				utils/error_philosophers.c		\
+				utils/destroy_mutex.c			\
 				utils/process_utils.c			\
 				utils/print.c					\
 				jobs/eat.c						\
@@ -45,7 +46,7 @@ DEPS		:=	$(OBJS:.o=.d)
 
 CC			=	gcc
 
-CFLAGS		=	-Wall -Wextra -Werror 
+CFLAGS		=	-Wall -Wextra -Werror -ggdb3 
 
 CPPFLAGS	=	-MMD -MP
 

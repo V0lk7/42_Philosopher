@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:36:48 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/28 11:48:37 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/28 14:57:55 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,18 @@ t_philo		**create_philo(t_data *data, t_fork **forks);
 //----------clear_data.c----------//
 void		free_philo(t_philo **philo);
 void		free_forks(t_fork **forks);
-void		free_all(t_fork **forks, t_philo **philo, t_data *data);
-//----------error_philosophers.c----------//
-void		error_create_philo(t_fork **forks);
+void		free_destroy_all(t_fork **forks, t_philo **philo, t_data *data);
+//----------destroy_mutex.c----------//
+bool		init_all_mutex(t_philo **philo, t_fork **forks, t_data *data);
+bool		init_mutex_data(t_data *data);
+bool		init_mutex_forks(t_fork **forks);
+bool		init_mutex_philo(t_philo **philo);
+bool		init_mutex_data(t_data *data);
+//----------destroy_mutex.c----------//
+void		destroy_all_mutex(t_data *data, t_philo **philo, t_fork **forks);
+void		destroy_mutex_data(t_data *data);
+void		destroy_mutex_forks(t_fork **forks, int i);
+void		destroy_mutex_philo(t_philo **philo, int i);
 //----------process_utils.c----------//
 bool		all_philo_have_eat(t_philo **philo);
 long		get_the_time(long zero);

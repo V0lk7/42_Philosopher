@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 17:20:16 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/28 11:48:33 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/28 13:28:06 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ typedef struct s_philo
 	pthread_t		id;
 	t_fork			*fork_r;
 	t_fork			*fork_l;
-	t_time			*time;
+	t_time			time;
 	t_data			*data;
 }	t_philo;
 

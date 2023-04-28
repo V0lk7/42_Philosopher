@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:00:38 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/28 11:48:31 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/28 15:11:26 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,22 @@ int	main(int argc, char **argv)
 
 	if (parse_user_input(argc, argv) == false
 		|| create_database(&data, argc, argv) == false)
-		return (0);
+		return (1);
 	forks = create_forks(data);
 	if (forks == NULL)
 		return (1);
 	philo = create_philo(&data, forks);
 	if (philo == NULL)
-		error_create_philo(forks);
+	{
+		destroy_mutex_forks(forks, -1);
+		destroy_mutex_data(&data);
+		free_forks(forks);
+		return (1);
+	}
+	if (init_all_mutex(philo, forks, &data) == false)
+		return (1);
 	running_philosophers(&data, philo);
-	free_all(forks, philo, &data);
+	free_destroy_all(forks, philo, &data);
 	return (0);
 }
 
@@ -72,8 +79,8 @@ static bool	start_philo(t_philo **philo)
 	time_philo = get_the_time(0);
 	while (philo[i])
 	{
-		philo[i]->time->zero = time_philo;
-		philo[i]->time->death = philo[i]->data->time_to_die;
+		philo[i]->time.zero = time_philo;
+		philo[i]->time.death = philo[i]->data->time_to_die;
 		if (pthread_create(&philo[i]->id, NULL, &routine_philo, philo[i]) != 0)
 		{
 			create_pthread_error(philo, i - 1);
