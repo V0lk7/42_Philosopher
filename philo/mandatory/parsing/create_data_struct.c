@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 23:00:20 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/27 11:27:57 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/28 10:26:56 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ t_philo	**create_philo(t_data *data, t_fork **forks)
 	while (i < data->nbr_of_philo)
 	{
 		philo[i] = malloc(sizeof(t_philo));
+		philo[i + 1] = NULL;
 		if (philo[i] == NULL
 			|| put_data_in_philo(philo[i], data, forks, i) == 1)
 		{
@@ -58,10 +59,8 @@ t_philo	**create_philo(t_data *data, t_fork **forks)
 				free_philo(philo);
 			return (NULL);
 		}
-		put_data_in_philo(philo[i], data, forks, i);
 		i++;
 	}
-	philo[i] = NULL;
 	return (philo);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jduval <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:17:29 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/27 11:24:55 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/28 10:27:39 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ t_action	**init_func(void)
 	t_action	**action;
 
 	action = malloc(sizeof(t_action *) * 9);
+	if (action == NULL)
+		return (NULL);
 	action[0] = job_eat;
 	action[1] = job_sleep;
 	action[2] = job_think;

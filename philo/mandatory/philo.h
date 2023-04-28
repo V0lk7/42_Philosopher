@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:36:48 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/27 11:22:37 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/28 10:47:27 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,6 @@ void		job_eat(t_philo *philo);
 void		job_sleep(t_philo *philo);
 void		job_think(t_philo *philo);
 void		death(t_philo *philo);
+//----------error_pthread.c----------//
+void		create_pthread_error(t_philo **philo, int index);
 #endif

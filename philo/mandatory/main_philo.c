@@ -6,14 +6,14 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:00:38 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/27 11:28:23 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/28 10:51:21 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 static void	*routine_philo(void *variable);
-static void	start_philo(t_philo **philo);
+static bool	start_philo(t_philo **philo);
 static void	running_philosophers(t_data *data, t_philo **philo);
 
 int	main(int argc, char **argv)
@@ -41,7 +41,8 @@ static void	running_philosophers(t_data *data, t_philo **philo)
 	int	i;
 
 	i = 0;
-	start_philo(philo);
+	if (start_philo(philo) == false)
+		return ;
 	while (1)
 	{
 		pthread_mutex_lock(&data->end_mutex);
@@ -62,7 +63,7 @@ static void	running_philosophers(t_data *data, t_philo **philo)
 	return ;
 }
 
-static void	start_philo(t_philo **philo)
+static bool	start_philo(t_philo **philo)
 {
 	int			i;
 	long		time_philo;
@@ -73,10 +74,14 @@ static void	start_philo(t_philo **philo)
 	{
 		philo[i]->time->zero = time_philo;
 		philo[i]->time->death = philo[i]->data->time_to_die;
-		pthread_create(&philo[i]->id, NULL, &routine_philo, philo[i]);
+		if (pthread_create(&philo[i]->id, NULL, &routine_philo, philo[i]) != 0)
+		{
+			create_pthread_error(philo, i - 1);
+			return (false);
+		}
 		i++;
 	}
-	return ;
+	return (true);
 }
 
 static void	*routine_philo(void *philo_base)

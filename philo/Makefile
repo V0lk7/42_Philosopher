@@ -6,7 +6,7 @@
 #    By: jduval <jduval@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/06 11:36:44 by jduval            #+#    #+#              #
-#    Updated: 2023/04/27 11:29:05 by jduval           ###   ########.fr        #
+#    Updated: 2023/04/28 10:51:23 by jduval           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRCS		:=	main_philo.c					\
 				parsing/parsing_utils.c			\
 				parsing/create_data_struct.c	\
 				utils/clear_data.c				\
+				utils/error_pthread.c			\
 				utils/error_philosophers.c		\
 				utils/process_utils.c			\
 				utils/print.c					\
