@@ -6,7 +6,7 @@
 /*   By: jduval <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:17:29 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/28 10:27:39 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/28 11:45:32 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,8 @@ bool	end_check(t_data *data, t_philo *philo)
 	return (false);
 }
 
-t_action	**init_func(void)
+void	init_func(t_action **action)
 {
-	t_action	**action;
-
-	action = malloc(sizeof(t_action *) * 9);
-	if (action == NULL)
-		return (NULL);
 	action[0] = job_eat;
 	action[1] = job_sleep;
 	action[2] = job_think;
@@ -78,5 +73,5 @@ t_action	**init_func(void)
 	action[6] = print_death;
 	action[7] = print_fork;
 	action[8] = NULL;
-	return (action);
+	return ;
 }

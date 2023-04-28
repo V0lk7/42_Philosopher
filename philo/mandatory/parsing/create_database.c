@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 15:15:41 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/28 10:27:48 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/28 11:46:33 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,7 @@ bool	create_database(t_data *data, int argc, char **argv)
 	data->time_to_die = ft_atoi(argv[2]);
 	data->time_of_eat = ft_atoi(argv[3]);
 	data->time_of_sleep = ft_atoi(argv[4]);
-	data->func = init_func();
-	if (data->func == NULL)
-		return (false);
+	init_func(data->func);
 	data->end = false;
 	pthread_mutex_init(&data->print, NULL);
 	pthread_mutex_init(&data->end_mutex, NULL);

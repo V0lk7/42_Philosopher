@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 17:20:16 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/27 11:24:47 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/28 11:48:33 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct s_data
 	int				time_of_sleep;
 	int				nbr_of_eat;
 	bool			end;
-	t_action		**func;
+	t_action		*func[9];
 	pthread_mutex_t	print;
 	pthread_mutex_t	end_mutex;
 }	t_data;

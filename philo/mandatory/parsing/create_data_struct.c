@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 23:00:20 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/28 10:26:56 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/28 11:48:35 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,26 @@ t_fork	**create_forks(t_data data)
 	t_fork	**forks;
 	int		i;
 
-	i = 0;
+	i = -1;
 	forks = malloc(sizeof(t_fork *) * (data.nbr_of_philo + 1));
 	if (forks == NULL)
 		return (NULL);
-	while (i < data.nbr_of_philo)
+	while (++i < data.nbr_of_philo)
 	{
 		forks[i] = malloc(sizeof(t_fork));
+		forks[i + 1] = NULL;
 		if (forks[i] == NULL)
+		{
+			if (i > 0)
+				free_forks(forks);
 			return (NULL);
-		pthread_mutex_init(&forks[i]->fork, NULL);
-		i++;
+		}
+		if (pthread_mutex_init(&forks[i]->fork, NULL) != 0)
+		{
+			free_and_destroy(forks, i - 1);
+			return (NULL);
+		}
 	}
-	forks[i] = NULL;
 	return (forks);
 }
 
@@ -55,8 +62,7 @@ t_philo	**create_philo(t_data *data, t_fork **forks)
 		if (philo[i] == NULL
 			|| put_data_in_philo(philo[i], data, forks, i) == 1)
 		{
-			if (i > 0)
-				free_philo(philo);
+			free_philo(philo);
 			return (NULL);
 		}
 		i++;

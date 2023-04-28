@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:36:48 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/28 10:47:27 by jduval           ###   ########.fr       */
+/*   Updated: 2023/04/28 11:48:37 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void		error_create_philo(t_fork **forks);
 bool		all_philo_have_eat(t_philo **philo);
 long		get_the_time(long zero);
 bool		end_check(t_data *data, t_philo *philo);
-t_action	**init_func(void);
+void		init_func(t_action **action);
 //----------print.c----------//
 void		print_fork(t_philo *philo);
 void		print_eat(t_philo *philo);
@@ -51,4 +51,5 @@ void		job_think(t_philo *philo);
 void		death(t_philo *philo);
 //----------error_pthread.c----------//
 void		create_pthread_error(t_philo **philo, int index);
+void		free_and_destroy(t_fork **forks, int index);
 #endif
