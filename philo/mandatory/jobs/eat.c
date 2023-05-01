@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 13:02:25 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/28 13:31:31 by jduval           ###   ########.fr       */
+/*   Updated: 2023/05/01 16:01:01 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,18 @@ void	job_eat(t_philo *philo)
 	pthread_mutex_lock(&philo->nbr_eat);
 	philo->nbr_of_eat++;
 	pthread_mutex_unlock(&philo->nbr_eat);
-	time = get_the_time(philo->time.zero) + philo->data->time_to_die;
-	philo->time.death = time;
 	philo->status = SLEEP;
 }
 
 static bool	eating(t_philo *philo)
 {
+	long time;
+
 	if (lock_forks(philo) == false)
 		return (false);
-	philo->time.job = get_the_time(philo->time.zero);
+	time = get_the_time(philo->time.zero);
+	philo->time.death = time + philo->data->time_to_die;
+	philo->time.job = time;
 	philo->data->func[EAT + PRINT](philo);
 	usleep(philo->data->time_of_eat * 1000);
 	pthread_mutex_unlock(&philo->fork_l->fork);
