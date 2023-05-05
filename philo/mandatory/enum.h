@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 17:20:16 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/28 13:28:06 by jduval           ###   ########.fr       */
+/*   Updated: 2023/05/05 17:45:11 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,13 @@
 typedef struct s_philo	t_philo;
 typedef void			t_action(t_philo *philo);
 
-typedef enum e_plus
+typedef enum e_print
 {
-	PRINT = 3,
-	FORK = 7
+	PRINT_EAT = 4,
+	PRINT_SLEEP = 5,
+	PRINT_THINK = 6,
+	PRINT_DEATH = 7,
+	PRINT_FORK = 8
 }	t_plus;
 
 typedef enum e_status
@@ -30,7 +33,8 @@ typedef enum e_status
 	EAT,
 	SLEEP,
 	THINK,
-	DEAD
+	DEAD,
+	END = 9
 }	t_status;
 
 typedef struct s_fork
@@ -40,9 +44,10 @@ typedef struct s_fork
 
 typedef struct s_time
 {
-	long	zero;
-	long	death;
-	long	job;
+	long			zero;
+	long			death;
+	long			job;
+	pthread_mutex_t	v_death;	
 }	t_time;
 
 typedef struct s_data
@@ -52,23 +57,22 @@ typedef struct s_data
 	int				time_of_eat;
 	int				time_of_sleep;
 	int				nbr_of_eat;
-	bool			end;
 	t_action		*func[9];
 	pthread_mutex_t	print;
-	pthread_mutex_t	end_mutex;
 }	t_data;
 
 typedef struct s_philo
 {
 	int				spot;
 	int				nbr_of_eat;
-	pthread_mutex_t	nbr_eat;
 	t_status		status;
-	pthread_t		id;
 	t_fork			*fork_r;
 	t_fork			*fork_l;
 	t_time			time;
 	t_data			*data;
+	pthread_t		id;
+	pthread_mutex_t	nbr_eat;
+	pthread_mutex_t	v_status;
 }	t_philo;
 
 #endif

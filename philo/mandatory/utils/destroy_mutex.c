@@ -6,7 +6,7 @@
 /*   By: jduval <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 13:38:38 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/28 15:11:16 by jduval           ###   ########.fr       */
+/*   Updated: 2023/05/05 15:15:01 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,31 @@
 
 void	destroy_all_mutex(t_data *data, t_philo **philo, t_fork **forks)
 {
-	destroy_mutex_data(data);
+	pthread_mutex_destroy(&data->print);
 	destroy_mutex_forks(forks, -1);
+	destroy_mutex_verif(philo, -1);
 	destroy_mutex_philo(philo, -1);
+	destroy_mutex_time(philo, -1);
 }
 
-void	destroy_mutex_data(t_data *data)
+void	destroy_mutex_time(t_philo **philo, int i)
 {
-	pthread_mutex_destroy(&data->print);
-	pthread_mutex_destroy(&data->end_mutex);
+	if (i == -1)
+	{
+		i = 0;
+		while (philo[i])
+		{
+			pthread_mutex_destroy(&philo[i]->time.v_death);
+			i++;
+		}
+		return ;
+	}
+	while (i >= 0)
+	{
+		pthread_mutex_destroy(&philo[i]->time.v_death);
+		i--;
+	}
+	return ;
 }
 
 void	destroy_mutex_forks(t_fork **forks, int i)
@@ -63,4 +79,23 @@ void	destroy_mutex_philo(t_philo **philo, int i)
 		i--;
 	}
 	return ;
+}
+
+void	destroy_mutex_verif(t_philo **philo, int i)
+{
+	if (i == -1)
+	{
+		i = 0;
+		while (philo[i])
+		{
+			pthread_mutex_destroy(&philo[i]->v_status);
+			i++;
+		}
+		return ;
+	}
+	while (i >= 0)
+	{
+		pthread_mutex_destroy(&philo[i]->v_status);
+		i--;
+	}
 }

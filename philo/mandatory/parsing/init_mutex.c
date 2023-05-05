@@ -6,7 +6,7 @@
 /*   By: jduval <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 13:07:20 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/28 14:58:02 by jduval           ###   ########.fr       */
+/*   Updated: 2023/05/05 17:55:31 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ bool	init_all_mutex(t_philo **philo, t_fork **forks, t_data *data)
 	}
 	if (init_mutex_forks(forks) == false)
 	{
-		destroy_mutex_data(data);
+		pthread_mutex_destroy(&data->print);
 		free_philo(philo);
 		free_forks(forks);
 		return (false);
 	}
 	if (init_mutex_philo(philo) == false)
 	{
-		destroy_mutex_data(data);
+		pthread_mutex_destroy(&data->print);
 		destroy_mutex_forks(forks, -1);
 		free_philo(philo);
 		free_forks(forks);
@@ -43,11 +43,6 @@ bool	init_mutex_data(t_data *data)
 {
 	if (pthread_mutex_init(&data->print, NULL) != 0)
 		return (false);
-	if (pthread_mutex_init(&data->end_mutex, NULL) != 0)
-	{
-		pthread_mutex_destroy(&data->print);
-		return (false);
-	}
 	return (true);
 }
 
@@ -72,15 +67,42 @@ bool	init_mutex_philo(t_philo **philo)
 {
 	int	i;
 
-	i = 0;
-	while (philo[i] != NULL)
+	i = -1;
+	while (philo[++i] != NULL)
 	{
 		if (pthread_mutex_init(&philo[i]->nbr_eat, NULL) != 0)
 		{
 			destroy_mutex_philo(philo, i);
 			return (false);
 		}
-		i++;
+		if (pthread_mutex_init(&philo[i]->v_status, NULL) != 0)
+		{
+			destroy_mutex_philo(philo, i);
+			destroy_mutex_verif(philo, i);
+			return (false);
+		}
+		if (pthread_mutex_init(&philo[i]->time.v_death, NULL) != 0)
+		{
+			destroy_mutex_philo(philo, i);
+			destroy_mutex_verif(philo, i);
+			destroy_mutex_time(philo, i);
+			return (false);
+		}
 	}
 	return (true);
+}
+
+void	init_func(t_action **action)
+{
+	action[0] = job_eat;
+	action[1] = job_sleep;
+	action[2] = job_think;
+	action[3] = job_dead;
+	action[4] = print_eat;
+	action[5] = print_sleep;
+	action[6] = print_think;
+	action[7] = print_death;
+	action[8] = print_fork;
+	action[9] = NULL;
+	return ;
 }

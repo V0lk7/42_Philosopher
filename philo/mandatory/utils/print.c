@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 09:10:16 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/28 13:29:31 by jduval           ###   ########.fr       */
+/*   Updated: 2023/05/05 17:25:00 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,63 +15,68 @@
 
 void	print_fork(t_philo *philo)
 {
-	long	time;
-
-	if (end_check(philo->data, philo) == true)
+	if (is_the_end(philo) == true || am_i_dead(philo) == true)
 		return ;
-	time = philo->time.job;
 	pthread_mutex_lock(&philo->data->print);
-	if (end_check(philo->data, philo) == true)
+	if (is_the_end(philo) == true || am_i_dead(philo) == true)
 	{
 		pthread_mutex_unlock(&philo->data->print);
 		return ;
 	}
-	printf("%li %i has taken a fork\n", time, philo->spot);
+	philo->time.job = get_time(philo->time.zero);
+	printf("%li %i has taken a fork\n", philo->time.job, philo->spot);
 	pthread_mutex_unlock(&philo->data->print);
 }
 
 void	print_eat(t_philo *philo)
 {
-	long	time;
-
-	if (end_check(philo->data, philo) == true)
+	if (is_the_end(philo) == true || am_i_dead(philo) == true)
 		return ;
-	time = philo->time.job;
 	pthread_mutex_lock(&philo->data->print);
-	printf("%li %i is eating\n", time, philo->spot);
+	if (is_the_end(philo) == true || am_i_dead(philo) == true)
+	{
+		pthread_mutex_unlock(&philo->data->print);
+		return ;
+	}
+	philo->time.job = get_time(philo->time.zero);
+	printf("%li %i is eating\n", philo->time.job, philo->spot);
 	pthread_mutex_unlock(&philo->data->print);
 }
 
 void	print_sleep(t_philo *philo)
 {
-	long	time;
-
-	if (end_check(philo->data, philo) == true)
+	if (is_the_end(philo) == true || am_i_dead(philo) == true)
 		return ;
-	time = philo->time.job;
 	pthread_mutex_lock(&philo->data->print);
-	printf("%li %i is sleeping\n", time, philo->spot);
+	if (is_the_end(philo) == true || am_i_dead(philo) == true)
+	{
+		pthread_mutex_unlock(&philo->data->print);
+		return ;
+	}
+	philo->time.job = get_time(philo->time.zero);
+	printf("%li %i is sleeping\n", philo->time.job, philo->spot);
 	pthread_mutex_unlock(&philo->data->print);
 }
 
 void	print_think(t_philo *philo)
 {
-	long	time;
-
-	if (end_check(philo->data, philo) == true)
+	if (is_the_end(philo) == true || am_i_dead(philo) == true)
 		return ;
-	time = philo->time.job;
 	pthread_mutex_lock(&philo->data->print);
-	printf("%li %i is thinking\n", time, philo->spot);
+	if (is_the_end(philo) == true || am_i_dead(philo) == true)
+	{
+		pthread_mutex_unlock(&philo->data->print);
+		return ;
+	}
+	philo->time.job = get_time(philo->time.zero);
+	printf("%li %i is thinking\n", philo->time.job, philo->spot);
 	pthread_mutex_unlock(&philo->data->print);
 }
 
 void	print_death(t_philo *philo)
 {
-	long	time;
-
-	time = philo->time.job;
 	pthread_mutex_lock(&philo->data->print);
-	printf("%li %i died\n", time, philo->spot);
+	philo->time.job = get_time(philo->time.zero);
+	printf("%li %i died\n", philo->time.job, philo->spot);
 	pthread_mutex_unlock(&philo->data->print);
 }

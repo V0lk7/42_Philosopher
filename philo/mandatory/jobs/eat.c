@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 13:02:25 by jduval            #+#    #+#             */
-/*   Updated: 2023/05/01 16:01:01 by jduval           ###   ########.fr       */
+/*   Updated: 2023/05/05 17:55:48 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <unistd.h>
 
 static bool	lock_forks(t_philo *philo);
-static void	eat_to_death(t_philo *philo, long time);
+static void	eat_to_death(t_philo *philo);
 static void	one_philo(t_philo *philo);
 static bool	eating(t_philo *philo);
 
@@ -22,38 +22,48 @@ void	job_eat(t_philo *philo)
 {
 	long	time;
 
-	if (end_check(philo->data, philo) == true)
-		return ;
-	time = get_the_time(philo->time.zero) + philo->data->time_of_eat;
+	time = get_time(philo->time.zero);
 	if (philo->fork_l == NULL)
 	{
 		one_philo(philo);
 		return ;
 	}
+	pthread_mutex_lock(&philo->time.v_death);
 	if (time >= philo->time.death)
 	{
-		eat_to_death(philo, time);
+		pthread_mutex_unlock(&philo->time.v_death);
+		eat_to_death(philo);
 		return ;
 	}
+	pthread_mutex_unlock(&philo->time.v_death);
 	if (eating(philo) == false)
 		return ;
 	pthread_mutex_lock(&philo->nbr_eat);
 	philo->nbr_of_eat++;
 	pthread_mutex_unlock(&philo->nbr_eat);
-	philo->status = SLEEP;
+	change_state(philo, SLEEP);
 }
 
 static bool	eating(t_philo *philo)
 {
-	long time;
+	long	time;
 
 	if (lock_forks(philo) == false)
 		return (false);
-	time = get_the_time(philo->time.zero);
-	philo->time.death = time + philo->data->time_to_die;
-	philo->time.job = time;
-	philo->data->func[EAT + PRINT](philo);
-	usleep(philo->data->time_of_eat * 1000);
+	if (am_i_dead(philo) == true || is_the_end(philo) == true)
+		return (false);
+	time = get_time(philo->time.zero) + philo->data->time_of_eat;
+	pthread_mutex_lock(&philo->time.v_death);
+	if (time > philo->time.death)
+	{
+		time -= philo->time.death;
+	}
+	else
+		time = philo->data->time_of_eat;
+	philo->time.death = get_time(philo->time.zero) + philo->data->time_to_die;
+	pthread_mutex_unlock(&philo->time.v_death);
+	philo->data->func[PRINT_EAT](philo);
+	usleep(time * 1000);
 	pthread_mutex_unlock(&philo->fork_l->fork);
 	pthread_mutex_unlock(&philo->fork_r->fork);
 	return (true);
@@ -61,56 +71,56 @@ static bool	eating(t_philo *philo)
 
 static void	one_philo(t_philo *philo)
 {
+	long	time;
+
 	pthread_mutex_lock(&philo->fork_r->fork);
-	philo->time.job = get_the_time(philo->time.zero);
-	philo->data->func[FORK](philo);
-	usleep((philo->time.death - philo->time.job) * 1000);
+	philo->data->func[PRINT_FORK](philo);
+	pthread_mutex_lock(&philo->time.v_death);
+	time = philo->time.death - get_time(philo->time.zero);
+	pthread_mutex_unlock(&philo->time.v_death);
+	usleep((time) * 1000);
 	pthread_mutex_unlock(&philo->fork_r->fork);
-	death(philo);
 }
 
-static void	eat_to_death(t_philo *philo, long time)
+static void	eat_to_death(t_philo *philo)
 {
-	if (end_check(philo->data, philo) == true)
-		return ;
-	if ((time - philo->data->time_of_eat) == philo->time.death)
-		death(philo);
-	else
+	long	time;
+
+	lock_forks(philo);
+	if (is_the_end(philo) != true || am_i_dead(philo) != true)
 	{
-		if (lock_forks(philo) == false)
-			return ;
-		time = (philo->time.death - get_the_time(philo->time.zero));
+		pthread_mutex_lock(&philo->time.v_death);
+		time = (philo->time.death - get_time(philo->time.zero));
+		pthread_mutex_unlock(&philo->time.v_death);
 		if (time >= 0)
 		{
-			philo->data->func[EAT + PRINT](philo);
+			philo->data->func[PRINT_EAT](philo);
+			pthread_mutex_lock(&philo->time.v_death);
+			time = (philo->time.death - get_time(philo->time.zero));
+			pthread_mutex_unlock(&philo->time.v_death);
 			usleep(time * 1000);
 		}
-		pthread_mutex_unlock(&philo->fork_l->fork);
-		pthread_mutex_unlock(&philo->fork_r->fork);
-		death(philo);
 	}
+	pthread_mutex_unlock(&philo->fork_l->fork);
+	pthread_mutex_unlock(&philo->fork_r->fork);
 }
 
 static bool	lock_forks(t_philo *philo)
 {
-	if (end_check(philo->data, philo) == true)
-		return (false);
 	pthread_mutex_lock(&philo->fork_l->fork);
-	if (end_check(philo->data, philo) == true)
+	if (is_the_end(philo) == true || am_i_dead(philo) == true)
 	{
 		pthread_mutex_unlock(&philo->fork_l->fork);
 		return (false);
 	}
-	philo->time.job = get_the_time(philo->time.zero);
-	philo->data->func[FORK](philo);
+	philo->data->func[PRINT_FORK](philo);
 	pthread_mutex_lock(&philo->fork_r->fork);
-	if (end_check(philo->data, philo) == true)
+	if (is_the_end(philo) == true || am_i_dead(philo) == true)
 	{
 		pthread_mutex_unlock(&philo->fork_l->fork);
 		pthread_mutex_unlock(&philo->fork_r->fork);
 		return (false);
 	}
-	philo->time.job = get_the_time(philo->time.zero);
-	philo->data->func[FORK](philo);
+	philo->data->func[PRINT_FORK](philo);
 	return (true);
 }

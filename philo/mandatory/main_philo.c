@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:00:38 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/28 15:11:26 by jduval           ###   ########.fr       */
+/*   Updated: 2023/05/05 17:56:01 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	*routine_philo(void *variable);
 static bool	start_philo(t_philo **philo);
-static void	running_philosophers(t_data *data, t_philo **philo);
+static void	running_philosophers(t_philo **philo);
 
 int	main(int argc, char **argv)
 {
@@ -31,19 +31,17 @@ int	main(int argc, char **argv)
 	philo = create_philo(&data, forks);
 	if (philo == NULL)
 	{
-		destroy_mutex_forks(forks, -1);
-		destroy_mutex_data(&data);
 		free_forks(forks);
 		return (1);
 	}
 	if (init_all_mutex(philo, forks, &data) == false)
 		return (1);
-	running_philosophers(&data, philo);
+	running_philosophers(philo);
 	free_destroy_all(forks, philo, &data);
 	return (0);
 }
 
-static void	running_philosophers(t_data *data, t_philo **philo)
+static void	running_philosophers(t_philo **philo)
 {
 	int	i;
 
@@ -52,13 +50,8 @@ static void	running_philosophers(t_data *data, t_philo **philo)
 		return ;
 	while (1)
 	{
-		pthread_mutex_lock(&data->end_mutex);
-		if (data->end == true)
-		{
-			pthread_mutex_unlock(&data->end_mutex);
+		if (is_he_dead(philo) == true)
 			break ;
-		}
-		pthread_mutex_unlock(&data->end_mutex);
 		if (all_philo_have_eat(philo) == true)
 			break ;
 	}
@@ -76,7 +69,7 @@ static bool	start_philo(t_philo **philo)
 	long		time_philo;
 
 	i = 0;
-	time_philo = get_the_time(0);
+	time_philo = get_time(0);
 	while (philo[i])
 	{
 		philo[i]->time.zero = time_philo;
@@ -93,10 +86,25 @@ static bool	start_philo(t_philo **philo)
 
 static void	*routine_philo(void *philo_base)
 {
-	t_philo	*philo;
+	t_philo		*philo;
+	t_status	tmp;
 
 	philo = philo_base;
-	while (end_check(philo->data, philo) == false)
-		philo->data->func[philo->status](philo);
+	while (1)
+	{
+		pthread_mutex_lock(&philo->v_status);
+		tmp = philo->status;
+		pthread_mutex_unlock(&philo->v_status);
+		philo->data->func[tmp](philo);
+		if (am_i_dead(philo) == true)
+		{
+			philo->data->func[DEAD](philo);
+			break ;
+		}
+		if (is_the_end(philo) == true)
+			break ;
+		if (did_i_eat_all(philo) == true)
+			break ;
+	}
 	return (0);
 }

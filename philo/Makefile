@@ -6,7 +6,7 @@
 #    By: jduval <jduval@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/06 11:36:44 by jduval            #+#    #+#              #
-#    Updated: 2023/05/01 13:45:48 by jduval           ###   ########.fr        #
+#    Updated: 2023/05/05 15:04:57 by jduval           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRCS		:=	main_philo.c					\
 				utils/error_pthread.c			\
 				utils/destroy_mutex.c			\
 				utils/process_utils.c			\
+				utils/verifs.c					\
 				utils/print.c					\
 				jobs/eat.c						\
 				jobs/sleep.c					\

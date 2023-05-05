@@ -6,7 +6,7 @@
 /*   By: jduval <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:36:24 by jduval            #+#    #+#             */
-/*   Updated: 2023/04/28 11:48:29 by jduval           ###   ########.fr       */
+/*   Updated: 2023/05/05 14:06:29 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@ void	create_pthread_error(t_philo **philo, int index)
 {
 	if (index == 0)
 		return ;
-	pthread_mutex_lock(&philo[index]->data->end_mutex);
-	philo[index]->data->end = true;
-	pthread_mutex_unlock(&philo[index]->data->end_mutex);
+	make_end(philo);
 	while (index > 0)
 	{
 		pthread_join(philo[index]->id, NULL);
