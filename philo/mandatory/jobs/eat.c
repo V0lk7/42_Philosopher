@@ -6,35 +6,26 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 13:02:25 by jduval            #+#    #+#             */
-/*   Updated: 2023/05/05 17:55:48 by jduval           ###   ########.fr       */
+/*   Updated: 2023/05/08 13:00:41 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 #include <unistd.h>
+#include <stdio.h>
 
 static bool	lock_forks(t_philo *philo);
-static void	eat_to_death(t_philo *philo);
 static void	one_philo(t_philo *philo);
 static bool	eating(t_philo *philo);
 
 void	job_eat(t_philo *philo)
 {
-	long	time;
-
-	time = get_time(philo->time.zero);
 	if (philo->fork_l == NULL)
 	{
 		one_philo(philo);
 		return ;
 	}
 	pthread_mutex_lock(&philo->time.v_death);
-	if (time >= philo->time.death)
-	{
-		pthread_mutex_unlock(&philo->time.v_death);
-		eat_to_death(philo);
-		return ;
-	}
 	pthread_mutex_unlock(&philo->time.v_death);
 	if (eating(philo) == false)
 		return ;
@@ -56,7 +47,7 @@ static bool	eating(t_philo *philo)
 	pthread_mutex_lock(&philo->time.v_death);
 	if (time > philo->time.death)
 	{
-		time -= philo->time.death;
+		time = philo->time.death - get_time(philo->time.zero);
 	}
 	else
 		time = philo->data->time_of_eat;
@@ -79,29 +70,6 @@ static void	one_philo(t_philo *philo)
 	time = philo->time.death - get_time(philo->time.zero);
 	pthread_mutex_unlock(&philo->time.v_death);
 	usleep((time) * 1000);
-	pthread_mutex_unlock(&philo->fork_r->fork);
-}
-
-static void	eat_to_death(t_philo *philo)
-{
-	long	time;
-
-	lock_forks(philo);
-	if (is_the_end(philo) != true || am_i_dead(philo) != true)
-	{
-		pthread_mutex_lock(&philo->time.v_death);
-		time = (philo->time.death - get_time(philo->time.zero));
-		pthread_mutex_unlock(&philo->time.v_death);
-		if (time >= 0)
-		{
-			philo->data->func[PRINT_EAT](philo);
-			pthread_mutex_lock(&philo->time.v_death);
-			time = (philo->time.death - get_time(philo->time.zero));
-			pthread_mutex_unlock(&philo->time.v_death);
-			usleep(time * 1000);
-		}
-	}
-	pthread_mutex_unlock(&philo->fork_l->fork);
 	pthread_mutex_unlock(&philo->fork_r->fork);
 }
 
