@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 13:02:25 by jduval            #+#    #+#             */
-/*   Updated: 2023/05/09 12:02:27 by jduval           ###   ########.fr       */
+/*   Updated: 2023/05/09 18:18:47 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ static bool	eating(t_philo *philo)
 {
 	int	time;
 
+	print_job(philo, EAT);
 	pthread_mutex_lock(&philo->time.v_death);
 	philo->time.death = get_time(philo->time.zero) + philo->data->time_to_die;
 	pthread_mutex_unlock(&philo->time.v_death);
-	print_job(philo, EAT);
 	time = get_time(philo->time.zero) + philo->data->time_of_eat;
 	while (get_time(philo->time.zero) < time)
 	{
@@ -57,6 +57,7 @@ static bool	eating(t_philo *philo)
 			unlock_forks(philo);
 			return (false);
 		}
+		usleep(100);
 	}
 	unlock_forks(philo);
 	return (true);
@@ -71,5 +72,6 @@ static void	one_philo(t_philo *philo)
 	time = philo->time.death - get_time(philo->time.zero);
 	pthread_mutex_unlock(&philo->time.v_death);
 	usleep((time) * 1000);
+	print_job(philo, DEAD);
 	unlock_forks(philo);
 }

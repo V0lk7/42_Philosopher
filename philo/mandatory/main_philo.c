@@ -6,11 +6,12 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:00:38 by jduval            #+#    #+#             */
-/*   Updated: 2023/05/09 12:00:49 by jduval           ###   ########.fr       */
+/*   Updated: 2023/05/09 18:18:57 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+#include <unistd.h>
 
 static void	*routine_philo(void *variable);
 static bool	start_philo(t_philo **philo);
@@ -90,16 +91,16 @@ static void	*routine_philo(void *philo_base)
 	t_status	tmp;
 
 	philo = philo_base;
-	while (1)
+	if (philo->spot % 2 != 0)
+		usleep(6000);
+	while (is_the_end(philo) == false)
 	{
+		if (am_i_dead(philo) == true)
+			break ;
 		pthread_mutex_lock(&philo->v_status);
 		tmp = philo->status;
 		pthread_mutex_unlock(&philo->v_status);
 		philo->data->func[tmp](philo);
-		if (am_i_dead(philo) == true)
-			break ;
-		if (is_the_end(philo) == true)
-			break ;
 		if (did_i_eat_all(philo) == true)
 			break ;
 	}

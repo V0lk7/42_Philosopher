@@ -6,7 +6,7 @@
 /*   By: jduval <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 08:44:45 by jduval            #+#    #+#             */
-/*   Updated: 2023/05/09 12:30:26 by jduval           ###   ########.fr       */
+/*   Updated: 2023/05/09 18:08:00 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,17 @@
 
 bool	lock_forks(t_philo *philo)
 {
-	while (philo->fork_right == false && philo->fork_left == false)
+	while (philo->fork_right == false || philo->fork_left == false)
 	{
-		if (take_fork(philo, 1) == true)
+		if (philo->fork_right == false && take_fork(philo, 1) == true)
 			philo->fork_right = true;
-		if (take_fork(philo, 0) == true)
+		if (philo->fork_left == false && take_fork(philo, 0) == true)
 			philo->fork_left = true;
 		if (am_i_dead(philo) == true || is_the_end(philo) == true)
 		{
 			unlock_forks(philo);
 			return (false);
 		}
-		usleep(10);
 	}
 	return (true);
 }

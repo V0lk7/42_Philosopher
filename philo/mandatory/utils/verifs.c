@@ -6,13 +6,11 @@
 /*   By: jduval <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:17:29 by jduval            #+#    #+#             */
-/*   Updated: 2023/05/09 12:00:20 by jduval           ###   ########.fr       */
+/*   Updated: 2023/05/09 15:00:49 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
-#include <sys/time.h>
-#include <stdlib.h>
 
 bool	all_philo_have_eat(t_philo **philo)
 {
