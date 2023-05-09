@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:00:38 by jduval            #+#    #+#             */
-/*   Updated: 2023/05/08 13:08:14 by jduval           ###   ########.fr       */
+/*   Updated: 2023/05/09 12:00:49 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,7 @@ static void	*routine_philo(void *philo_base)
 		pthread_mutex_unlock(&philo->v_status);
 		philo->data->func[tmp](philo);
 		if (am_i_dead(philo) == true)
-		{
-			philo->data->func[DEAD](philo);
 			break ;
-		}
 		if (is_the_end(philo) == true)
 			break ;
 		if (did_i_eat_all(philo) == true)

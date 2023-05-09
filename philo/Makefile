@@ -6,7 +6,7 @@
 #    By: jduval <jduval@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/06 11:36:44 by jduval            #+#    #+#              #
-#    Updated: 2023/05/08 13:01:04 by jduval           ###   ########.fr        #
+#    Updated: 2023/05/09 12:06:48 by jduval           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,9 +33,9 @@ SRCS		:=	main_philo.c					\
 				utils/verifs.c					\
 				utils/print.c					\
 				jobs/eat.c						\
+				jobs/lock_fork.c				\
 				jobs/sleep.c					\
 				jobs/think.c					\
-				jobs/death.c					\
 
 SRCS		:=	$(SRCS:%=$(SRC_DIR)/%)
 

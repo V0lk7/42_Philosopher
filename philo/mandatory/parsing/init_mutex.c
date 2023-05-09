@@ -6,7 +6,7 @@
 /*   By: jduval <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 13:07:20 by jduval            #+#    #+#             */
-/*   Updated: 2023/05/05 17:55:31 by jduval           ###   ########.fr       */
+/*   Updated: 2023/05/09 12:08:14 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,12 +97,6 @@ void	init_func(t_action **action)
 	action[0] = job_eat;
 	action[1] = job_sleep;
 	action[2] = job_think;
-	action[3] = job_dead;
-	action[4] = print_eat;
-	action[5] = print_sleep;
-	action[6] = print_think;
-	action[7] = print_death;
-	action[8] = print_fork;
-	action[9] = NULL;
+	action[4] = NULL;
 	return ;
 }

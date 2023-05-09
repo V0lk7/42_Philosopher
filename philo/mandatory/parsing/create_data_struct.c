@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 23:00:20 by jduval            #+#    #+#             */
-/*   Updated: 2023/05/05 17:25:06 by jduval           ###   ########.fr       */
+/*   Updated: 2023/05/09 11:41:43 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_fork	**create_forks(t_data data)
 				free_forks(forks);
 			return (NULL);
 		}
+		forks[i]->lock = false;
 		i++;
 	}
 	return (forks);
@@ -72,10 +73,13 @@ static void	put_data_in_philo(t_philo *philo,
 	philo->spot = i + 1;
 	philo->nbr_of_eat = 0;
 	philo->data = data;
+	philo->print = true;
+	philo->fork_right = false;
+	philo->fork_left = false;
 	if (i % 2 == 0)
 		philo->status = EAT;
 	else
-		philo->status = SLEEP;
+		philo->status = THINK;
 	distribute_forks(philo, forks, i);
 }
 

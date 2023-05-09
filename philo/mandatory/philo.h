@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:36:48 by jduval            #+#    #+#             */
-/*   Updated: 2023/05/05 16:16:45 by jduval           ###   ########.fr       */
+/*   Updated: 2023/05/09 12:06:58 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,15 @@ bool		is_he_dead(t_philo **philo);
 bool		is_the_end(t_philo *philo);
 bool		did_i_eat_all(t_philo *philo);
 //----------print.c----------//
-void		print_fork(t_philo *philo);
-void		print_eat(t_philo *philo);
-void		print_sleep(t_philo *philo);
-void		print_think(t_philo *philo);
-void		print_death(t_philo *philo);
-//----------eat.c----------//
+void		print_job(t_philo *philo, t_status status);
+//----------jobs.c----------//
 void		job_eat(t_philo *philo);
 void		job_sleep(t_philo *philo);
 void		job_think(t_philo *philo);
-void		job_dead(t_philo *philo);
+//----------lock_fork.c----------//
+bool		lock_forks(t_philo *philo);
+bool		take_fork(t_philo *philo, int which);
+void		unlock_forks(t_philo *philo);
 //----------error_pthread.c----------//
 void		create_pthread_error(t_philo **philo, int index);
 void		free_and_destroy(t_fork **forks, int index);
