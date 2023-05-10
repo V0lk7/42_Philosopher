@@ -6,7 +6,7 @@
 /*   By: jduval <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:17:29 by jduval            #+#    #+#             */
-/*   Updated: 2023/05/10 08:58:02 by jduval           ###   ########.fr       */
+/*   Updated: 2023/05/10 16:18:29 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ bool	is_he_dead(t_philo **philo)
 		{
 			pthread_mutex_unlock(&philo[i]->time.v_death);
 			change_state(philo[i], DEAD);
+			print_job(philo[i], DEAD);
 			make_end(philo);
 			return (true);
 		}

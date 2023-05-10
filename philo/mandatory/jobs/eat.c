@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 13:02:25 by jduval            #+#    #+#             */
-/*   Updated: 2023/05/10 08:57:05 by jduval           ###   ########.fr       */
+/*   Updated: 2023/05/10 16:17:41 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,9 @@ void	job_eat(t_philo *philo)
 		return ;
 	}
 	if (lock_forks(philo) == false)
-	{
-		if (am_i_dead(philo) == true)
-			print_job(philo, DEAD);
 		return ;
-	}
 	if (eating(philo) == false)
-	{
-		print_job(philo, DEAD);
 		return ;
-	}
 	pthread_mutex_lock(&philo->nbr_eat);
 	philo->nbr_of_eat++;
 	pthread_mutex_unlock(&philo->nbr_eat);
@@ -56,6 +49,8 @@ static bool	eating(t_philo *philo)
 			unlock_forks(philo);
 			return (false);
 		}
+		if (am_i_dead(philo) == true)
+			return (false);
 		usleep(100);
 	}
 	unlock_forks(philo);
@@ -71,6 +66,5 @@ static void	one_philo(t_philo *philo)
 	time = philo->time.death - get_time(philo->time.zero);
 	pthread_mutex_unlock(&philo->time.v_death);
 	usleep((time) * 1000);
-	print_job(philo, DEAD);
 	unlock_forks(philo);
 }

@@ -61,7 +61,7 @@ die_test () {
 		read -rs -n 1 -p $'Press ENTER to start test, press any other key to exit tester...\n' key  # read from stdin, accepting only 1 char
 		if [[ $key == "" ]] ; then
 			printf "\n"
-			$1 $input | grep eating | wc -l	# run ./philo with test case input
+			$1 $input	# run ./philo with test case input
 		else
 			exit 0
 		fi
