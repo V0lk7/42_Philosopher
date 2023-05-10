@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:00:38 by jduval            #+#    #+#             */
-/*   Updated: 2023/05/09 21:34:29 by jduval           ###   ########.fr       */
+/*   Updated: 2023/05/10 08:55:20 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,11 @@ static void	*routine_philo(void *philo_base)
 
 	philo = philo_base;
 	if (philo->spot % 2 != 0)
-		usleep(philo->data->nbr_of_philo * 100);
+	{
+		print_job(philo, THINK);
+		change_state(philo, EAT);
+		usleep(philo->data->time_of_eat * 1000);
+	}
 	while (is_the_end(philo) == false)
 	{
 		if (am_i_dead(philo) == true)

@@ -6,13 +6,12 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 13:02:25 by jduval            #+#    #+#             */
-/*   Updated: 2023/05/09 18:18:47 by jduval           ###   ########.fr       */
+/*   Updated: 2023/05/10 08:57:05 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 #include <unistd.h>
-#include <stdio.h>
 
 static void	one_philo(t_philo *philo);
 static bool	eating(t_philo *philo);

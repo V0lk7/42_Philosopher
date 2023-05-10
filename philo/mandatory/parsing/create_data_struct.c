@@ -6,7 +6,7 @@
 /*   By: jduval <jduval@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 23:00:20 by jduval            #+#    #+#             */
-/*   Updated: 2023/05/09 18:18:52 by jduval           ###   ########.fr       */
+/*   Updated: 2023/05/10 08:32:04 by jduval           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ static void	put_data_in_philo(t_philo *philo,
 	philo->spot = i + 1;
 	philo->nbr_of_eat = 0;
 	philo->data = data;
-	philo->print = true;
 	philo->fork_right = false;
 	philo->fork_left = false;
 	if ((i + 1) % 2 == 0)
